@@ -41,8 +41,10 @@ defmodule SystemPieces do
 
   @doc """
   Check-in to the system. Must provide required information.
+  Errors are returned converted to a string.
   """
-  @spec check_in(params :: map) :: {:ok, id :: integer}|{:error, reason :: String.t}
+  @spec check_in(params :: map)
+    :: {:ok, id :: integer}|{:error, reason :: String.t}
   def check_in(params) do
     case CheckIn.create(params) do
       {:ok, request} ->

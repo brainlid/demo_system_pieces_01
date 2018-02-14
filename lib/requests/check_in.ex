@@ -7,7 +7,6 @@ defmodule SystemPieces.Requests.CheckIn do
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias Bank.Requests.CheckIn
   require Logger
 
   embedded_schema do
@@ -19,7 +18,7 @@ defmodule SystemPieces.Requests.CheckIn do
     field :state, :string
     field :postal_code, :string
     field :country, :string, default: "USA"
-    # business contact
+    # personal contact
     field :contact_name, :string
     field :contact_email, :string
     field :contact_phone, :string
