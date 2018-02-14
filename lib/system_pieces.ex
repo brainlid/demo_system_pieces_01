@@ -4,6 +4,9 @@ defmodule SystemPieces do
   """
   alias SystemPieces.HealthMonitor.HealthMonitorEts
   alias SystemPieces.HealthMonitor.HealthMonitorPlain
+  alias SystemPieces.Requests.CheckIn
+  alias SystemPieces.Utils.Errors
+  require Logger
 
 
   def check_status_ets do
@@ -35,4 +38,39 @@ defmodule SystemPieces do
       "check_status_plain"  => fn -> HealthMonitorPlain.status() end
     }, time: 10)
   end
+
+  @doc """
+  Check-in to the system. Must provide required information.
+  """
+  @spec check_in(params :: map) :: {:ok, id :: integer}|{:error, reason :: String.t}
+  def check_in(params) do
+    case CheckIn.create(params) do
+      {:ok, request} ->
+        process_request(request)
+      {:error, _} = error ->
+        log_and_return_request_error("CheckIn", error)
+    end
+  end
+
+  @doc """
+  Simple example to make it easy to create a valid entry.
+  """
+  def check_in_valid do
+    check_in(%{contact_name: "Tim", insurance_policy: "A987654"})
+  end
+
+  def process_request(request) do
+    # NOTE: add the request to a queue, worker processes it.
+    #       return an ID for the job
+    Logger.info("Process request #{inspect request}")
+    {:ok, 1}
+  end
+
+  @spec log_and_return_request_error(request_type :: String.t, error :: tuple) :: {:error, String.t}
+  defp log_and_return_request_error(request_type, error) do
+    {:error, reason} = error = Errors.convert_error_changeset(error)
+    Logger.error("Error while creating #{request_type} request: #{inspect reason}")
+    error
+  end
+
 end

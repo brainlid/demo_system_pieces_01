@@ -24,6 +24,7 @@ defmodule SystemPieces.MixProject do
     [
       {:benchee, "~> 0.11", only: :dev},
       {:benchee_html, "~> 0.4", only: :dev},
+      {:ecto, "~> 2.2.8"},
     ]
   end
 end
