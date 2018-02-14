@@ -46,7 +46,7 @@ defmodule SystemPieces do
   def check_in(params) do
     case CheckIn.create(params) do
       {:ok, request} ->
-        process_request(request)
+        queue_request(request)
       {:error, _} = error ->
         log_and_return_request_error("CheckIn", error)
     end
@@ -59,7 +59,7 @@ defmodule SystemPieces do
     check_in(%{contact_name: "Tim", insurance_policy: "A987654"})
   end
 
-  def process_request(request) do
+  def queue_request(request) do
     # NOTE: add the request to a queue, worker processes it.
     #       return an ID for the job
     Logger.info("Process request #{inspect request}")
