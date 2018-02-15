@@ -94,7 +94,7 @@ defmodule SystemPieces.HealthMonitor.HealthMonitorEts do
   @spec write_cached_status(State.t) :: State.t
   defp write_cached_status(%State{cache_table: cache_table} = state) do
     # writes the status to the ETS cache table.
-    # Since the tables is setup as a :set, the insert replaces an existing value
+    # Since the tables is setup as a :set, an insert replaces an existing value
     :ets.insert(cache_table, {:status, State.as_status(state)})
     state
   end

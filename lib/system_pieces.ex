@@ -6,6 +6,7 @@ defmodule SystemPieces do
   alias SystemPieces.HealthMonitor.HealthMonitorPlain
   alias SystemPieces.Requests.CheckIn
   alias SystemPieces.Utils.Errors
+  alias SystemPieces.Visits
   require Logger
 
 
@@ -73,6 +74,13 @@ defmodule SystemPieces do
     {:error, reason} = error = Errors.convert_error_changeset(error)
     Logger.error("Error while creating #{request_type} request: #{inspect reason}")
     error
+  end
+
+  @doc """
+  Ability to fetch visit records for a user.
+  """
+  def user_visits(user_id) do
+    Visits.all_visits(user_id: user_id)
   end
 
 end
